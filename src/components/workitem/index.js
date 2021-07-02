@@ -17,14 +17,14 @@ class WorkItem extends Component {
 			return (
 				<Paper key={index} className={classes.textRight}>
 					<div className={classes.d_flex}>
-						<h3>{work.name}</h3>
+						<h3>{work.name_work}</h3>
 						<h3>{work.time}p</h3>
 					</div>
 					<div className={classes.d_flex}>
 						<p>{work.description}</p>
 					</div>
 					<Fab
-						className={work.status === 1 ? d_none : d_block}
+						className={work.status === true ? d_none : d_block}
 						aria-label="delete"
 					>
 						<DoneIcon />

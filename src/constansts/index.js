@@ -1,10 +1,10 @@
 export const STATUSES = [
     {
-        value: 1,
+        value: true,
         label: "ĐÃ THỰC HIỆN",
     },
     {
-        value: 0,
+        value: false,
         label: "CHƯA THỰC HIỆN",
     },
 ];

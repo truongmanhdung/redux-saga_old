@@ -3,32 +3,13 @@ import styles from "./styles";
 import { withStyles } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
-
 import Grid from "@material-ui/core/Grid";
-
 import { STATUSES } from "../../constansts";
 import WorkForm from "../../components/workform/index";
 import WorkItem from "../../components/workitem/index";
-const works = [
-    {
-        name: "học lập trình1",
-        description: "học react js1",
-        time: 30,
-        status: 1,
-    },
-    {
-        name: "học lập trình2",
-        description: "học react js2",
-        time: 30,
-        status: 1,
-    },
-    {
-        name: "học lập trình3",
-        time: 30,
-        description: "học react js3",
-        status: 0,
-    },
-];
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as workActions from "../../actions/work";
 class taskBoard extends Component {
     constructor(props) {
         super(props);
@@ -36,23 +17,31 @@ class taskBoard extends Component {
             open: false,
         };
     }
+    componentDidMount() {
+        const { workActionsCreators } = this.props;
+        const { fetchWorksRequest } = workActionsCreators;
+        fetchWorksRequest();
+    }
     renderBoard() {
+        const { listWorks } = this.props;
         var html = null;
         html = (
             <Grid container spacing={3}>
                 {STATUSES.map((status, index) => {
-                    const workFilter = works.filter(
-                        (work) => work.status === status.value
-                    );
-                    return (
-                        <WorkItem
-                            onform={this.handleClickOpen}
-                            works={workFilter}
-                            status={status}
-                            key={index}
-                            index={index}
-                        />
-                    );
+                    if (listWorks) {
+                        const workFilter = listWorks.filter(
+                            (work) => work.status === status.value
+                        );
+                        return (
+                            <WorkItem
+                                onform={this.handleClickOpen}
+                                works={workFilter}
+                                status={status}
+                                key={index}
+                                index={index}
+                            />
+                        );
+                    }
                 })}
             </Grid>
         );
@@ -70,6 +59,7 @@ class taskBoard extends Component {
     };
 
     render() {
+        
         const { classes } = this.props;
         const { open } = this.state;
         return (
@@ -90,4 +80,16 @@ class taskBoard extends Component {
     }
 }
 
-export default withStyles(styles)(taskBoard);
+const mapStateToProps = (state) => {
+    return {
+        listWorks: state.works.listWorks,
+    };
+};
+const mapDispatchToProps = (dispatch) => {
+    return {
+        workActionsCreators: bindActionCreators(workActions, dispatch),
+    };
+};
+export default withStyles(styles)(
+    connect(mapStateToProps, mapDispatchToProps)(taskBoard)
+);

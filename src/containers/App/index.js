@@ -2,14 +2,24 @@ import React, { Component } from "react";
 import styles from "./styles";
 import { withStyles } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/styles";
-import TaskBoard from "../Taskboard/index";
 import theme from "../../commons/Theme/index";
+import { Provider } from "react-redux";
+import configureStore from "../../redux/configureStore";
+import { ToastContainer } from "react-toastify";
+import { BrowserRouter as Router } from "react-router-dom";
+import Header from '../../components/layouts/header';
+const store = configureStore();
 class App extends Component {
     render() {
         return (
-            <ThemeProvider theme={theme}>
-                <TaskBoard />
-            </ThemeProvider>
+            <Provider store={store}>
+                <ThemeProvider theme={theme}>
+                    <Router>
+                        <Header />
+                        <ToastContainer />
+                    </Router>
+                </ThemeProvider>
+            </Provider>
         );
     }
 }
