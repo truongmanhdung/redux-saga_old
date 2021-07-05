@@ -33,11 +33,48 @@ export const fetchWorksRequest = () => {
         workApis
             .getList()
             .then(res => {
-                const {data} = res;
+                const { data } = res;
                 dispatch(fetchWorksSuccess(data));
             })
             .catch(err => {
                 dispatch(fetchWorksFailed(err));
             });
+    };
+};
+
+
+export const addWorks = (data) => {
+    return {
+        type: workTypes.ADD_WORKS,
+        payload: {
+            data,
+        },
+    };
+};
+
+
+export const filterWorks = keywork => {
+    return {
+        type: workTypes.FILTER_WORKS,
+        payload: {
+            keywork,
+        }
+    };
+};
+export const filterWorksSuccess = data => {
+    return {
+        type: workTypes.FILTER_WORKS_SUCCESS,
+        payload: {
+            data,
+        }
+    };
+};
+
+export const filterWorksFailed = (err) => {
+    return {
+        type: workTypes.FILTER_WORKS_FAILED,
+        payload: {
+            err,
+        }
     };
 };

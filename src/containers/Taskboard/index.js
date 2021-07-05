@@ -1,15 +1,18 @@
-import React, { Component } from "react";
-import styles from "./styles";
 import { withStyles } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import AddIcon from "@material-ui/icons/Add";
 import Grid from "@material-ui/core/Grid";
-import { STATUSES } from "../../constansts";
-import WorkForm from "../../components/workform/index";
-import WorkItem from "../../components/workitem/index";
+import AddIcon from "@material-ui/icons/Add";
+import React, { Component } from "react";
 import { connect } from "react-redux";
+
+import 'react-toastify/dist/ReactToastify.css';
 import { bindActionCreators } from "redux";
 import * as workActions from "../../actions/work";
+import WorkForm from "../../components/workform/index";
+import WorkItem from "../../components/workitem/index";
+import { STATUSES } from "../../constansts";
+import styles from "./styles";
+import Search from '../../components/search/index';
 class taskBoard extends Component {
     constructor(props) {
         super(props);
@@ -17,11 +20,11 @@ class taskBoard extends Component {
             open: false,
         };
     }
-    componentDidMount() {
-        const { workActionsCreators } = this.props;
-        const { fetchWorksRequest } = workActionsCreators;
-        fetchWorksRequest();
-    }
+    // componentDidMount() {
+    //     const { workActionsCreators } = this.props;
+    //     const { fetchWorksRequest } = workActionsCreators;
+    //     fetchWorksRequest();
+    // }
     renderBoard() {
         const { listWorks } = this.props;
         var html = null;
@@ -57,6 +60,17 @@ class taskBoard extends Component {
             open: false,
         });
     };
+    getData = () =>{
+        const { workActionsCreators } = this.props;
+        const { fetchWorksRequest } = workActionsCreators;
+        fetchWorksRequest();
+    }
+    handleSearch = (e) =>{
+        const {value} = e.target;
+        const { workActionsCreators } = this.props;
+        const {filterWorks} = workActionsCreators;
+        filterWorks(value);
+    }
 
     render() {
         
@@ -68,13 +82,23 @@ class taskBoard extends Component {
                     variant="contained"
                     className={classes.m_20}
                     color="primary"
+                    onClick={this.getData}
+                >
+                    Get Data
+                </Button>
+                <Button
+                    variant="contained"
+                    className={classes.m_20}
+                    color="primary"
                     onClick={this.handleClickOpen}
                 >
                     <AddIcon />
                     THÊM CÔNG VIỆC
                 </Button>
+                <Search handleSearch = {this.handleSearch} />
                 <div className={classes.root}>{this.renderBoard()}</div>
                 <WorkForm open={open} handleClose={this.handleClose} />
+               
             </div>
         );
     }
