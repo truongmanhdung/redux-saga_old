@@ -1,4 +1,4 @@
-import { fork, take,call,put,delay, takeLatest} from "redux-saga/effects";
+import { fork, take,call,put,delay, takeLatest, select} from "redux-saga/effects";
 import * as workTypes from "../constansts/work";
 import {getList} from '../apis/work';
 import {showLoading , hideLoading} from '../actions/loading';;
@@ -26,8 +26,19 @@ function* watchFetchListWorkAction() {
     yield put(hideLoading());
  }
  function* filterWorkSaga({payload}){
+     
      yield delay(500);
-    console.log("oke",payload)
+     const {keyword} = payload;
+     const listWorks = yield select(state=> state.works.listWorks);
+    
+     const filterWorks = listWorks.filter(
+            work => work.name_work
+            .trim()
+            .toLowerCase()
+            .includes(keyword.trim().toLowerCase())
+            
+     );
+     console.log(filterWorks);
  }
 function* rootSaga(){
     yield fork(watchFetchListWorkAction);

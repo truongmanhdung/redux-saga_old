@@ -53,11 +53,11 @@ export const addWorks = (data) => {
 };
 
 
-export const filterWorks = keywork => {
+export const filterWorks = keyword=> {
     return {
         type: workTypes.FILTER_WORKS,
         payload: {
-            keywork,
+            keyword,
         }
     };
 };
