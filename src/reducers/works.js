@@ -18,7 +18,6 @@ const myReducers = (state = initialState, action) => {
         };
         case workTypes.FETCH_WORKS_FAILED: {
             const { err } = action.payload;
-            toastError(err);
             return {
                 ...state,
                 listWorks: [],
