@@ -5,17 +5,27 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import { connect } from "react-redux";
+import * as actionWorks from '../../actions/work';
+import { withStyles } from "@material-ui/core";
+import styles from "./styles";
 class workForms extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            id: '',
             name_work: '',
+            userId: 1,
             time: '',
             description: '',
             status: false
         };
     };
+
+    componentDidUpdate(nextProps) {
+        
+    }
     onChange = (e) => {
         const target = e.target;
         const name = target.name;
@@ -27,12 +37,11 @@ class workForms extends Component {
 
     onSave = (e) => {
         e.preventDefault();
-
-
+        this.props.onAddWork(this.state);
     }
     render() {
-
-        const { open, handleClose } = this.props;
+        const {name_work,time,description} = this.state;
+        const { open, handleClose, title } = this.props;
         return (
             <div>
                 <Dialog
@@ -41,7 +50,7 @@ class workForms extends Component {
                     aria-labelledby="form-dialog-title"
                 >
                     <DialogTitle id="form-dialog-title">
-                        Thêm công việc
+                        {title}
                     </DialogTitle>
                     <form onSubmit={this.onSave}>
                         <DialogContent >
@@ -54,6 +63,7 @@ class workForms extends Component {
                                 required
                                 fullWidth
                                 name="name_work"
+                                value={name_work}
                                 onChange={this.onChange}
                             />
                             <TextField
@@ -64,6 +74,7 @@ class workForms extends Component {
                                 required
                                 fullWidth
                                 name="description"
+                                value={description}
                                 onChange={this.onChange}
                             />
                             <TextField
@@ -74,6 +85,7 @@ class workForms extends Component {
                                 type="number"
                                 fullWidth
                                 name="time"
+                                value={time}
                                 onChange={this.onChange}
                             />
                         </DialogContent>
@@ -91,5 +103,15 @@ class workForms extends Component {
         );
     }
 }
-
-export default workForms;
+const mapStateToProps = (state) => {
+    return {
+        
+    };
+};
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onAddWork: (work) => dispatch(actionWorks.addWorks(work))
+    };
+};
+export default withStyles(styles)(
+    connect(mapStateToProps, mapDispatchToProps)(workForms))

@@ -42,12 +42,19 @@ export const fetchWorksRequest = () => {
     };
 };
 
-
-export const addWorks = (data) => {
+export const addWorks = (work) => {
     return {
         type: workTypes.ADD_WORKS,
         payload: {
-            data,
+            work,
+        },
+    };
+};
+export const addWorkSuccess = (work) => {
+    return {
+        type: workTypes.ADD_WORK_SUCCESS,
+        payload: {
+            work,
         },
     };
 };
@@ -76,5 +83,23 @@ export const filterWorksFailed = (err) => {
         payload: {
             err,
         }
+    };
+};
+
+
+export const editWorks = (work) => {
+    return {
+        type: workTypes.EDIT_WORKS,
+        payload: {
+            work,
+        },
+    };
+};
+export const editWorkSuccess = (work) => {
+    return {
+        type: workTypes.EDIT_WORKS_SUCCESS,
+        payload: {
+            work,
+        },
     };
 };

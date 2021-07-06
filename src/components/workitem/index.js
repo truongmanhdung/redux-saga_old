@@ -6,8 +6,21 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import DoneIcon from "@material-ui/icons/Done";
 import EditIcon from "@material-ui/icons/Edit";
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as modalActions from "../../actions/modal";
+import * as actionEditWork from '../../actions/work';
 import styles from "./styles";
 class WorkItem extends Component {
+	onform = (work) => {
+		const { modalActionsCreators,modalEditWorkCreators } = this.props;
+        const { showModal, changeModalTitle } =
+        modalActionsCreators;
+		const {editWorks} = modalEditWorkCreators;
+        showModal();
+        changeModalTitle("Sửa công việc");
+		editWorks(work);
+	}
 	render() {
 		const { classes, index } = this.props;
 		const { status, works } = this.props;
@@ -32,7 +45,7 @@ class WorkItem extends Component {
 					<Fab
 						color="secondary"
 						className={classes.mx_10}
-						onClick={this.props.onform}
+						onClick={()=>this.onform(work)}
 						aria-label="edit"
 					>
 						<EditIcon />
@@ -51,5 +64,16 @@ class WorkItem extends Component {
 		);
 	}
 }
-
-export default withStyles(styles)(WorkItem);
+const mapStateToProps = (state) => {
+    return {
+        modalReduce: state.modalReduce
+    };
+};
+const mapDispatchToProps = (dispatch) => {
+    return {
+        modalActionsCreators: bindActionCreators(modalActions, dispatch),
+		modalEditWorkCreators: bindActionCreators(actionEditWork, dispatch)
+    };
+};
+export default withStyles(styles)(
+    connect(mapStateToProps, mapDispatchToProps)(WorkItem))

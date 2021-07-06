@@ -60,15 +60,11 @@ class taskBoard extends Component {
         changeModalTitle("Thêm mới công việc");
     };
     handleClose = () => {
-        this.setState({
-            open: false,
-        });
+        const { modalActionsCreators } = this.props;
+        const { hideModal } =
+        modalActionsCreators;
+        hideModal();
     };
-    // getData = () =>{
-    //     const { workActionsCreators } = this.props;
-    //     const { fetchWorksRequest } = workActionsCreators;
-    //     fetchWorksRequest();
-    // }
     handleSearch = (e) => {
         const { value } = e.target;
         const { workActionsCreators } = this.props;
@@ -77,8 +73,9 @@ class taskBoard extends Component {
     };
 
     render() {
-        const { classes } = this.props;
-        const { open } = this.state;
+        const {modalReduce, classes} = this.props;
+        const open = modalReduce.showModal;
+        const title = modalReduce.title;
         return (
             <div>
                 {/* <Button
@@ -100,7 +97,7 @@ class taskBoard extends Component {
                 </Button>
                 <Search handleSearch={this.handleSearch} />
                 <div className={classes.root}>{this.renderBoard()}</div>
-                <WorkForm open={open} handleClose={this.handleClose} />
+                <WorkForm open={open} title={title} handleClose={this.handleClose} />
             </div>
         );
     }
@@ -123,6 +120,7 @@ taskBoard.propTypes = {
 const mapStateToProps = (state) => {
     return {
         listWorks: state.works.listWorks,
+        modalReduce: state.modalReduce
     };
 };
 const mapDispatchToProps = (dispatch) => {

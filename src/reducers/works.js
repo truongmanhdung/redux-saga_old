@@ -25,11 +25,30 @@ const myReducers = (state = initialState, action) => {
             };
         };
         case workTypes.ADD_WORKS: {
-            const { data } = action.payload;
-            state.push(data);
             return {
-                state
-            }
+                ...state,
+            };
+        };
+        case workTypes.ADD_WORK_SUCCESS: {
+            const { work } = action.payload;
+            state.listWorks.push(work);
+            return {
+                ...state,
+                listWorks: state.listWorks,
+            };
+        };
+        case workTypes.EDIT_WORKS: {
+            return {
+                ...state,
+            };
+        };
+        case workTypes.EDIT_WORKS_SUCCESS: {
+            const { work } = action.payload;
+            state.listWorks.put(work);
+            return {
+                ...state,
+                listWorks: state.listWorks,
+            };
         };
         // case workTypes.FILTER_WORKS: {
         //     return ;

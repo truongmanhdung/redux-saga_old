@@ -1,9 +1,10 @@
-import { fork, take,call,put,delay, takeLatest, select} from "redux-saga/effects";
+import { fork, take,call,put,delay, takeLatest, select, takeEvery} from "redux-saga/effects";
 import * as workTypes from "../constansts/work";
-import {getList} from '../apis/work';
+import {getList,addWork} from '../apis/work';
 import {showLoading , hideLoading} from '../actions/loading';;
-import {fetchWorksSuccess, fetchWorksFailed} from '../actions/work';
+import {fetchWorksSuccess, fetchWorksFailed, addWorkSuccess} from '../actions/work';
 import { toast } from 'react-toastify';
+import { hideModal } from "../actions/modal";
 // các công việc đã thực hiện
 // bươc 1: xử lý hàm fetch_works
 // bước 2: thực hiện call api
@@ -27,20 +28,45 @@ function* watchFetchListWorkAction() {
  }
  function* filterWorkSaga({payload}){
      const {keyword} = payload;
-     const listWorks = yield select(state=> state.works.listWorks);
+     delay(500);
+     const listWorks = yield workApis.getList().then(res => {
+        const {data} = res;
+        return data;
+    });
      console.log(keyword);
+     console.log(listWorks);
      const filterWorks = listWorks.filter(
-            work => work.name_work
-            .trim()
-            .toLowerCase()
-            .includes(keyword.trim().toLowerCase())
+        work => work.name_work
+        .trim()
+        .toLowerCase()
+        .includes(keyword.trim().toLowerCase())
 
      );
+    console.log(filterWorks)
      yield put(fetchWorksSuccess(filterWorks));
+ }
+ function* addWorkSaga ({payload}){
+    const {name_work,description, time, userId,status} = payload.work;
+    yield put(showLoading());
+    const resp = yield call(addWork,{
+        name_work,
+        description,
+        time,
+        userId,
+        status
+    });
+    const {data} = resp;
+    if(resp.status === 201){
+        yield put(addWorkSuccess(data));
+    }
+    yield put(hideModal());
+    delay(500);
+    yield put(hideLoading());
  }
 function* rootSaga(){
     yield fork(watchFetchListWorkAction);
     yield takeLatest(workTypes.FILTER_WORKS, filterWorkSaga);
+    yield takeEvery(workTypes.ADD_WORKS,addWorkSaga);
 }
 
 

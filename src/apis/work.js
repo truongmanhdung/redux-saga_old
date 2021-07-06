@@ -7,6 +7,7 @@ export const getList = () =>{
     return axiosService.get(`${API_URL}${url}`);
 };
 
-export const addWork = (data)=>{
-    return axiosService.push(`${API_URL}${url}`,data);
+export const addWork = work=>{
+    console.log(work);
+    return axiosService.post(`${API_URL}${url}`,work);
 };

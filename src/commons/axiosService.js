@@ -19,5 +19,9 @@ class AxionsService {
     put(url,data){
         return this.instance.put(url,data);
     }
+    post(url,data){
+        return this.instance.post(url,data);
+    }
+
 }
 export default new AxionsService();
