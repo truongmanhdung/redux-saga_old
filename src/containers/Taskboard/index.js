@@ -5,14 +5,16 @@ import AddIcon from "@material-ui/icons/Add";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import { bindActionCreators } from "redux";
 import * as workActions from "../../actions/work";
+import * as modalActions from "../../actions/modal";
 import WorkForm from "../../components/workform/index";
 import WorkItem from "../../components/workitem/index";
 import { STATUSES } from "../../constansts";
 import styles from "./styles";
-import Search from '../../components/search/index';
+import PropTypes from "prop-types";
+import Search from "../../components/search/index";
 class taskBoard extends Component {
     constructor(props) {
         super(props);
@@ -20,11 +22,11 @@ class taskBoard extends Component {
             open: false,
         };
     }
-    // componentDidMount() {
-    //     const { workActionsCreators } = this.props;
-    //     const { fetchWorksRequest } = workActionsCreators;
-    //     fetchWorksRequest();
-    // }
+    componentDidMount() {
+        const { workActionsCreators } = this.props;
+        const { fetchWorksRequest } = workActionsCreators;
+        fetchWorksRequest();
+    }
     renderBoard() {
         const { listWorks } = this.props;
         var html = null;
@@ -51,41 +53,42 @@ class taskBoard extends Component {
         return html;
     }
     handleClickOpen = () => {
-        this.setState({
-            open: true,
-        });
+        const { modalActionsCreators } = this.props;
+        const { showModal, changeModalContent, changeModalTitle } =
+        modalActionsCreators;
+        showModal();
+        changeModalTitle("Thêm mới công việc");
     };
     handleClose = () => {
         this.setState({
             open: false,
         });
     };
-    getData = () =>{
+    // getData = () =>{
+    //     const { workActionsCreators } = this.props;
+    //     const { fetchWorksRequest } = workActionsCreators;
+    //     fetchWorksRequest();
+    // }
+    handleSearch = (e) => {
+        const { value } = e.target;
         const { workActionsCreators } = this.props;
-        const { fetchWorksRequest } = workActionsCreators;
-        fetchWorksRequest();
-    }
-    handleSearch = (e) =>{
-        const {value} = e.target;
-        const { workActionsCreators } = this.props;
-        const {filterWorks} = workActionsCreators;
+        const { filterWorks } = workActionsCreators;
         filterWorks(value);
-    }
+    };
 
     render() {
-        
         const { classes } = this.props;
         const { open } = this.state;
         return (
             <div>
-                <Button
+                {/* <Button
                     variant="contained"
                     className={classes.m_20}
                     color="primary"
                     onClick={this.getData}
                 >
                     Get Data
-                </Button>
+                </Button> */}
                 <Button
                     variant="contained"
                     className={classes.m_20}
@@ -95,14 +98,27 @@ class taskBoard extends Component {
                     <AddIcon />
                     THÊM CÔNG VIỆC
                 </Button>
-                <Search handleSearch = {this.handleSearch} />
+                <Search handleSearch={this.handleSearch} />
                 <div className={classes.root}>{this.renderBoard()}</div>
                 <WorkForm open={open} handleClose={this.handleClose} />
-               
             </div>
         );
     }
 }
+
+taskBoard.propTypes = {
+    classes: PropTypes.object,
+    workActionsCreators: PropTypes.shape({
+        fetchWorksRequest: PropTypes.func,
+        filterWorks: PropTypes.func,
+    }),
+    modalActionsCreators: PropTypes.shape({
+        showModal: PropTypes.func,
+        hideModal: PropTypes.func,
+        changeModalContent: PropTypes.func,
+        changeModalTitle: PropTypes.func,
+    }),
+};
 
 const mapStateToProps = (state) => {
     return {
@@ -112,6 +128,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         workActionsCreators: bindActionCreators(workActions, dispatch),
+        modalActionsCreators: bindActionCreators(modalActions, dispatch),
     };
 };
 export default withStyles(styles)(

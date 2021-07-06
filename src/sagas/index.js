@@ -26,23 +26,21 @@ function* watchFetchListWorkAction() {
     yield put(hideLoading());
  }
  function* filterWorkSaga({payload}){
-     
-     yield delay(500);
      const {keyword} = payload;
      const listWorks = yield select(state=> state.works.listWorks);
-    
+     console.log(keyword);
      const filterWorks = listWorks.filter(
             work => work.name_work
             .trim()
             .toLowerCase()
             .includes(keyword.trim().toLowerCase())
-            
+
      );
-     console.log(filterWorks);
+     yield put(fetchWorksSuccess(filterWorks));
  }
 function* rootSaga(){
     yield fork(watchFetchListWorkAction);
-    yield takeLatest(workTypes.FILTER_WORKS, filterWorkSaga)
+    yield takeLatest(workTypes.FILTER_WORKS, filterWorkSaga);
 }
 
 
