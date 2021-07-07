@@ -111,3 +111,20 @@ export const updateWorkSuccess = (data) => {
         },
     };
 };
+export const deleteWorks = (id) => {
+    return {
+        type: workTypes.DELETE_WORKS,
+        payload: {
+            id,
+        },
+    };
+};
+
+export const deleteWorkSuccess = (data) => {
+    return {
+        type: workTypes.DELETE_WORK_SUCCESS,
+        payload: {
+            data,
+        },
+    };
+};

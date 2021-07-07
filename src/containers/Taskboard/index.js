@@ -57,8 +57,22 @@ class taskBoard extends Component {
         showModal();
         changeModalTitle("Sửa công việc");
     }
+    onDelete = (id)=>{
+        if(confirm("bạn có muốn xóa không")){
+            const { workActionsCreators } = this.props;
+            const { deleteWorks } = workActionsCreators;
+            deleteWorks(id);
+        }
+    }
+    updateStatus = (id) =>{
+        if(confirm("Bạn có muốn hoàn thành công việc hay không?")){
+            const { workActionsCreators } = this.props;
+            const { deleteWorks } = workActionsCreators;
+            deleteWorks(id);
+        }
+    }
     renderBoard() {
-        const { listWorks } = this.props;
+        const { listWorks} = this.props;
         var html = null;
         html = (
             <Grid container spacing={3}>
@@ -69,9 +83,11 @@ class taskBoard extends Component {
                         );
                         return (
                             <WorkItem
+                                updateStatus = {this.updateStatus}
                                 onForm = {this.onEditForm}
                                 works={workFilter}
                                 status={status}
+                                onDelete={this.onDelete}
                                 key={index}
                                 index={index}
                             />

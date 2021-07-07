@@ -27,9 +27,9 @@ class workForms extends Component {
             status: false
         };
     };
-       
+
     componentWillReceiveProps(nextProps){
-        if(nextProps && nextProps.workEditing){  
+        if(nextProps && nextProps.workEditing){
           this.setState({
             id: nextProps.workEditing.id,
             name_work: nextProps.workEditing.name_work,
@@ -65,7 +65,7 @@ class workForms extends Component {
         if(workEditing && workEditing.id){
             this.props.onUpdateWork(this.state);
         }else{
-            this.props.onAddWork(work);
+            this.props.onAddWork(this.state);
         }
     }
     renderStatus(){
@@ -86,13 +86,13 @@ class workForms extends Component {
                     </FormControl>);
         }
         return html;
-        
+
     };
     render() {
         const {name_work,time,description } = this.state;
-      
+
         const { open, handleClose, title ,workEditing} = this.props;
-       
+
         return (
             <div>
                 <Dialog
@@ -114,7 +114,7 @@ class workForms extends Component {
                                 required
                                 fullWidth
                                 name="name_work"
-                               
+
                                 onChange={this.onChange}
                                 value={name_work}
                             />
@@ -126,7 +126,7 @@ class workForms extends Component {
                                 required
                                 fullWidth
                                 name="description"
-                                
+
                                 onChange={this.onChange}
                                 value={description}
                             />
@@ -141,7 +141,7 @@ class workForms extends Component {
                                 value={time}
                                 onChange={this.onChange}
                             />
-                            
+
                             {this.renderStatus()}
                         </DialogContent>
                         <DialogActions>

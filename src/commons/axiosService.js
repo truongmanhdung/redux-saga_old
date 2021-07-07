@@ -5,7 +5,7 @@ class AxionsService {
         const instance = axios.create();
         instance.interceptors.response.use(this.handleSusscess,this.handleError);
         this.instance = instance;
-    } 
+    }
     handleSusscess(res) {
         return res;
     }
@@ -21,6 +21,9 @@ class AxionsService {
     }
     post(url,data){
         return this.instance.post(url,data);
+    }
+    delete(url){
+        return this.instance.delete(url);
     }
 
 }

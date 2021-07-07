@@ -1,8 +1,8 @@
 import { fork, take,call,put,delay, takeLatest, select, takeEvery} from "redux-saga/effects";
 import * as workTypes from "../constansts/work";
-import {getList,addWork,updateWork} from '../apis/work';
+import {getList,addWork,updateWork,deleteWork} from '../apis/work';
 import {showLoading , hideLoading} from '../actions/loading';;
-import {fetchWorksSuccess, fetchWorksFailed, addWorkSuccess, updateWorkSuccess} from '../actions/work';
+import {fetchWorksSuccess, fetchWorksFailed, addWorkSuccess, updateWorkSuccess, deleteWorkSuccess} from '../actions/work';
 import { toast } from 'react-toastify';
 import { hideModal } from "../actions/modal";
 import * as workApis from '../apis/work';
@@ -59,10 +59,12 @@ function* watchFetchListWorkAction() {
     const {data} = resp;
     if(resp.status === 201){
         yield put(addWorkSuccess(data));
+        yield toast.success("Thêm thành công");
     }
     yield put(hideModal());
     delay(500);
     yield put(hideLoading());
+
  }
 
  function* updateWorkSaga({payload}){
@@ -79,16 +81,30 @@ function* watchFetchListWorkAction() {
     const {data} = resp;
     if(resp.status === 200){
         yield put(updateWorkSuccess(data));
+        yield toast.success("Sửa thành công");
     }
     yield put(hideModal());
     delay(500);
     yield put(hideLoading());
+ }
+
+ function* deleteWorkSaga({payload}){
+    const {id} = payload;
+    console.log(id);
+    yield put(showLoading());
+    const res = yield call(deleteWork,id);
+    const {data} = res;
+    yield put(deleteWorkSuccess(data));
+    delay(500);
+    yield put(hideLoading());
+    yield toast.success("Xóa thành công");
  }
 function* rootSaga(){
     yield fork(watchFetchListWorkAction);
     yield takeLatest(workTypes.FILTER_WORKS, filterWorkSaga);
     yield takeEvery(workTypes.ADD_WORKS,addWorkSaga);
     yield takeLatest(workTypes.UPDATE_WORKS,updateWorkSaga);
+    yield takeLatest(workTypes.DELETE_WORKS,deleteWorkSaga);
 }
 
 
