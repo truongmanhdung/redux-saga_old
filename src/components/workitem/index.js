@@ -50,4 +50,4 @@ class WorkItem extends Component {
 		);
 	}
 }
-export default withStyles(styles)(WorkItem)
+export default withStyles(styles)(WorkItem);

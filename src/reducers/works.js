@@ -74,7 +74,7 @@ const myReducers = (state = initialState, action) => {
                 return {
                     ...state,
                     listWorks: newList
-                }
+                };
             }else{
                 return {
                     ...state,

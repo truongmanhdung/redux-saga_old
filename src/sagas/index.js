@@ -88,7 +88,7 @@ function* rootSaga(){
     yield fork(watchFetchListWorkAction);
     yield takeLatest(workTypes.FILTER_WORKS, filterWorkSaga);
     yield takeEvery(workTypes.ADD_WORKS,addWorkSaga);
-    yield takeLatest(workTypes.UPDATE_WORKS,updateWorkSaga)
+    yield takeLatest(workTypes.UPDATE_WORKS,updateWorkSaga);
 }
 
 
