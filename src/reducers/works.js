@@ -7,6 +7,7 @@ const myReducers = (state = initialState, action) => {
             return {
                 ...state,
                 listWorks: [],
+                workEditing: null
             };
         };
         case workTypes.FETCH_WORKS_SUCCESS: {
@@ -37,16 +38,11 @@ const myReducers = (state = initialState, action) => {
             };
         };
         case workTypes.EDIT_WORKS: {
+            const {work} = action.payload;
             return {
+                
                 ...state,
-            };
-        };
-        case workTypes.EDIT_WORKS_SUCCESS: {
-            const { work } = action.payload;
-            state.listWorks.put(work);
-            return {
-                ...state,
-                listWorks: state.listWorks,
+                workEditing: work
             };
         };
         // case workTypes.FILTER_WORKS: {
@@ -58,8 +54,33 @@ const myReducers = (state = initialState, action) => {
             return {
                 ...state,
                 listWorks: data,
+            };
+        };
+        case workTypes.UPDATE_WORKS: {
+            return {
+                ...state,
+            };
+        };
+        case workTypes.UPDATE_WORK_SUCCESS: {
+            const { data } = action.payload;
+            const {listWorks} = state;
+            const index = listWorks.findIndex(item=>item.id===data.id);
+            if(index!==-1){
+                const newList = [
+                    ...listWorks.slice(0, index),
+                    data,
+                    ...listWorks.slice(index+1)
+                ];
+                return {
+                    ...state,
+                    listWorks: newList
+                }
+            }else{
+                return {
+                    ...state,
+                };
             }
-        }
+        };
         default:
             return state;
     };

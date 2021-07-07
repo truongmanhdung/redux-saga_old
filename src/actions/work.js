@@ -95,11 +95,19 @@ export const editWorks = (work) => {
         },
     };
 };
-export const editWorkSuccess = (work) => {
+export const updateWorks = (work) => {
     return {
-        type: workTypes.EDIT_WORKS_SUCCESS,
+        type: workTypes.UPDATE_WORKS,
         payload: {
             work,
+        },
+    };
+};
+export const updateWorkSuccess = (data) => {
+    return {
+        type: workTypes.UPDATE_WORK_SUCCESS,
+        payload: {
+            data,
         },
     };
 };

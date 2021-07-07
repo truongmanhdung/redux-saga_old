@@ -9,5 +9,6 @@ export const ADD_WORKS = 'ADD_WORKS';
 export const ADD_WORK_SUCCESS = 'ADD_WORK_SUCCESS';
 
 export const EDIT_WORKS = 'EDIT_WORKS';
-export const EDIT_WORKS_SUCCESS = 'EDIT_WORK_SUCCESS';
+export const UPDATE_WORKS = 'UPDATE_WORKS';
+export const UPDATE_WORK_SUCCESS = 'UPDATE_WORK_SUCCESS';
 

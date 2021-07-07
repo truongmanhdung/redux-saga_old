@@ -27,34 +27,11 @@ class taskBoard extends Component {
         const { fetchWorksRequest } = workActionsCreators;
         fetchWorksRequest();
     }
-    renderBoard() {
-        const { listWorks } = this.props;
-        var html = null;
-        html = (
-            <Grid container spacing={3}>
-                {STATUSES.map((status, index) => {
-                    if (listWorks) {
-                        const workFilter = listWorks.filter(
-                            (work) => work.status === status.value
-                        );
-                        return (
-                            <WorkItem
-                                onform={this.handleClickOpen}
-                                works={workFilter}
-                                status={status}
-                                key={index}
-                                index={index}
-                            />
-                        );
-                    }
-                })}
-            </Grid>
-        );
-        return html;
-    }
     handleClickOpen = () => {
-        const { modalActionsCreators } = this.props;
-        const { showModal, changeModalContent, changeModalTitle } =
+        const { modalActionsCreators,workActionsCreators } = this.props;
+        const { editWorks } = workActionsCreators;
+        editWorks(null);
+        const { showModal, changeModalTitle } =
         modalActionsCreators;
         showModal();
         changeModalTitle("Thêm mới công việc");
@@ -71,6 +48,41 @@ class taskBoard extends Component {
         const { filterWorks } = workActionsCreators;
         filterWorks(value);
     };
+    onEditForm = (work)=>{
+        const { modalActionsCreators,workActionsCreators } = this.props;
+        const { editWorks } = workActionsCreators;
+        editWorks(work);
+        const { showModal, changeModalTitle } =
+        modalActionsCreators;
+        showModal();
+        changeModalTitle("Sửa công việc");
+    }
+    renderBoard() {
+        const { listWorks } = this.props;
+        var html = null;
+        html = (
+            <Grid container spacing={3}>
+                {STATUSES.map((status, index) => {
+                    if (listWorks) {
+                        const workFilter = listWorks.filter(
+                            (work) => work.status === status.value
+                        );
+                        return (
+                            <WorkItem
+                                onForm = {this.onEditForm}
+                                works={workFilter}
+                                status={status}
+                                key={index}
+                                index={index}
+                            />
+                        );
+                    }
+                })}
+            </Grid>
+        );
+        return html;
+    }
+
 
     render() {
         const {modalReduce, classes} = this.props;
@@ -127,6 +139,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         workActionsCreators: bindActionCreators(workActions, dispatch),
         modalActionsCreators: bindActionCreators(modalActions, dispatch),
+
     };
 };
 export default withStyles(styles)(

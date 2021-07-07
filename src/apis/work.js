@@ -8,6 +8,9 @@ export const getList = () =>{
 };
 
 export const addWork = work=>{
-    console.log(work);
     return axiosService.post(`${API_URL}${url}`,work);
 };
+export const updateWork = (work, workId)=>{
+    return axiosService.put(`${API_URL}${url}/${workId}`,work);
+};
+

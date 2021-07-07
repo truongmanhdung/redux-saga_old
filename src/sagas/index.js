@@ -1,10 +1,11 @@
 import { fork, take,call,put,delay, takeLatest, select, takeEvery} from "redux-saga/effects";
 import * as workTypes from "../constansts/work";
-import {getList,addWork} from '../apis/work';
+import {getList,addWork,updateWork} from '../apis/work';
 import {showLoading , hideLoading} from '../actions/loading';;
-import {fetchWorksSuccess, fetchWorksFailed, addWorkSuccess} from '../actions/work';
+import {fetchWorksSuccess, fetchWorksFailed, addWorkSuccess, updateWorkSuccess} from '../actions/work';
 import { toast } from 'react-toastify';
 import { hideModal } from "../actions/modal";
+import * as workApis from '../apis/work';
 // các công việc đã thực hiện
 // bươc 1: xử lý hàm fetch_works
 // bước 2: thực hiện call api
@@ -42,7 +43,7 @@ function* watchFetchListWorkAction() {
         .includes(keyword.trim().toLowerCase())
 
      );
-    console.log(filterWorks)
+    console.log(filterWorks);
      yield put(fetchWorksSuccess(filterWorks));
  }
  function* addWorkSaga ({payload}){
@@ -63,10 +64,31 @@ function* watchFetchListWorkAction() {
     delay(500);
     yield put(hideLoading());
  }
+
+ function* updateWorkSaga({payload}){
+    const {name_work,description, time, userId,status} = payload.work;
+    const workEditing = yield select(state=>state.works.workEditing);
+    yield put(showLoading());
+    const resp = yield call(updateWork,{
+        name_work,
+        description,
+        time,
+        userId,
+        status
+    },workEditing.id);
+    const {data} = resp;
+    if(resp.status === 200){
+        yield put(updateWorkSuccess(data));
+    }
+    yield put(hideModal());
+    delay(500);
+    yield put(hideLoading());
+ }
 function* rootSaga(){
     yield fork(watchFetchListWorkAction);
     yield takeLatest(workTypes.FILTER_WORKS, filterWorkSaga);
     yield takeEvery(workTypes.ADD_WORKS,addWorkSaga);
+    yield takeLatest(workTypes.UPDATE_WORKS,updateWorkSaga)
 }
 
 
