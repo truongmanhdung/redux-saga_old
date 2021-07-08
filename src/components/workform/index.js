@@ -26,6 +26,7 @@ class workForms extends Component {
             description: '',
             status: false
         };
+    
     };
 
     componentWillReceiveProps(nextProps){

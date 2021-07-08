@@ -38,10 +38,8 @@ export default function ButtonAppBar() {
         }
         return <Switch>{result}</Switch>;
     };
-    var user = localStorage.getItem("user");
-    var user = JSON.parse(user);
     return (
-        
+    
         <div className={classes.root}>
             <AppBar position="static">
                 <Toolbar>
