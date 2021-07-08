@@ -27,11 +27,11 @@ class SignUp extends Component {
         const {history} = this.props;
         e.preventDefault();
         this.props.onSignUp(this.state);
-        history.goBack();
+        history.push("/works");
     }
     render() {
         return <div>
-            <div className="login" onSubmit={this.onSave}>
+            <div className="login">
                 <h1>Sign Up</h1>
                 <form onSubmit={this.onSave}>
                     <TextField onChange={this.onChange} type="name" required style={{width: '100%'}} id="outlined-basic" label="Name" name="name" variant="outlined" />

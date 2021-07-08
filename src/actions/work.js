@@ -27,20 +27,7 @@ export const fetchWorksFailed = (err) => {
 // b3: dispatch nếu thành công hàm fetchWorksSuccess()
 
 
-export const fetchWorksRequest = () => {
-    return (dispatch) => {
-        dispatch(fetchWorks());
-        workApis
-            .getList()
-            .then(res => {
-                const { data } = res;
-                dispatch(fetchWorksSuccess(data));
-            })
-            .catch(err => {
-                dispatch(fetchWorksFailed(err));
-            });
-    };
-};
+
 
 export const addWorks = (work) => {
     return {
@@ -130,7 +117,6 @@ export const deleteWorkSuccess = (data) => {
 };
 
 export const updateStatus = (id,status) => {
-    console.log(status)
     return {
         type: workTypes.UPDATE_STATUS,
         payload: {

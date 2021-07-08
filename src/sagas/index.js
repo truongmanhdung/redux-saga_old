@@ -5,20 +5,16 @@ import {getList,addWork,updateWork,deleteWork,updateStatus} from '../apis/work';
 import {showLoading , hideLoading} from '../actions/loading';;
 import {fetchWorksSuccess, fetchWorksFailed, addWorkSuccess, updateWorkSuccess, deleteWorkSuccess,updateStatusSuccess} from '../actions/work';
 import { toast } from 'react-toastify';
-import {signupSuccess} from '../actions/user';
+import {signupSuccess,loginSuccess} from '../actions/user';
 import { hideModal } from "../actions/modal";
 import * as workApis from '../apis/work';
-import {addUser} from '../apis/user';
-// các công việc đã thực hiện
-// bươc 1: xử lý hàm fetch_works
-// bước 2: thực hiện call api
-// bước 3: nếu success thì sẽ trả về data
-// bước 4: chạy hàm fetchWorksSuccess
-// bước 5: thực thi những hàm còn lại
+import {getUser,addUser} from '../apis/user';
 function* watchFetchListWorkAction() {
     yield take(workTypes.FETCH_WORKS);
     yield put(showLoading());
-    const res = yield call(getList);
+    const userList = localStorage.getItem("user");
+    const user = JSON.parse(userList);
+    const res = yield call(getList,user.id);
     const {status, data} = res;
     if(status === 200){
         yield put(fetchWorksSuccess(data));
@@ -37,8 +33,6 @@ function* watchFetchListWorkAction() {
         const {data} = res;
         return data;
     });
-     console.log(keyword);
-     console.log(listWorks);
      const filterWorks = listWorks.filter(
         work => work.name_work
         .trim()
@@ -93,7 +87,6 @@ function* watchFetchListWorkAction() {
 
  function* deleteWorkSaga({payload}){
     const {id} = payload;
-    console.log(id);
     yield put(showLoading());
     const res = yield call(deleteWork,id);
     const {data} = res;
@@ -104,7 +97,6 @@ function* watchFetchListWorkAction() {
  }
  function* updateStatusSaga({payload}){
     const {id,status} = payload;
-    console.log(id);
     yield put(showLoading());
     
     const resp = yield call(updateStatus,{
@@ -129,24 +121,75 @@ function* watchFetchListWorkAction() {
         email,
         password
     });
-    const {data} = resp;
+    var {data} = resp;
     if(resp.status === 201){
-        console.log(data);
         yield put(signupSuccess(data));
-        yield toast.success("Đăng nhập thành công");
+        yield toast.success("Đăng kí thành công");
         localStorage.setItem('user',JSON.stringify(data));
+    }
+    var id = data.id;
+    const res = yield call(getList,id);
+    var {status, data} = res;
+    if(status === 200){
+        yield put(fetchWorksSuccess(data));
+        yield toast.error("Chưa có dữ liệu công việc");
+    }else{
+        yield put(fetchWorksFailed(err));
+        yield toast.error("lấy dữ liệu thất bại");
+    }
+    
+    delay(500);
+    yield put(hideLoading());
+ }
+
+ function* loginSaga({payload}){
+    const {user} = payload;
+    const {email,password} = user;
+    yield put(showLoading());
+    const resp = yield call(getUser);
+    var {data} = resp;
+    const userDung =  data.map(userSever=>{
+        if(userSever.email === email && userSever.password === password){
+            localStorage.setItem('user',JSON.stringify(userSever));
+            return userSever.id;
+        }  
+    });
+    var id = userDung.join('');
+    yield put(loginSuccess(user));
+    const res = yield call(getList,id);
+    var {status, data} = res;
+    if(status === 200){
+        yield put(fetchWorksSuccess(data));
+        yield toast.success("Lấy dữ liệu thành công");
+    }else{
+        yield put(fetchWorksFailed(err));
+        yield toast.error("lấy dữ liệu thất bại");
     }
     delay(500);
     yield put(hideLoading());
  }
-function* rootSaga(){
+function* logoutSaga(){
+    yield put(showLoading());
+    yield localStorage.clear();
     yield fork(watchFetchListWorkAction);
+    yield delay(1000);
+    yield put(hideLoading());
+}
+
+function* rootSaga(){
+    yield takeLatest(userTypes.SIGNUP,signupSaga);
+    yield takeLatest(userTypes.LOGIN,loginSaga);
+    const user = localStorage.getItem("user");
+    if(user){
+        yield fork(watchFetchListWorkAction);
+    }
+    yield takeLatest(userTypes.LOGOUT,logoutSaga);
     yield takeLatest(workTypes.FILTER_WORKS, filterWorkSaga);
-    yield takeEvery(workTypes.ADD_WORKS,addWorkSaga);
+    yield takeLatest(workTypes.ADD_WORKS,addWorkSaga);
     yield takeLatest(workTypes.UPDATE_WORKS,updateWorkSaga);
     yield takeLatest(workTypes.DELETE_WORKS,deleteWorkSaga);
     yield takeLatest(workTypes.UPDATE_STATUS,updateStatusSaga);
-    yield takeLatest(userTypes.SIGNUP,signupSaga);
+    
 }
 
 

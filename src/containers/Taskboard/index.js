@@ -24,8 +24,8 @@ class taskBoard extends Component {
     }
     componentDidMount() {
         const { workActionsCreators } = this.props;
-        const { fetchWorksRequest } = workActionsCreators;
-        fetchWorksRequest();
+        const { fetchWorks} = workActionsCreators;
+        fetchWorks();
     }
     handleClickOpen = () => {
         const { modalActionsCreators,workActionsCreators } = this.props;

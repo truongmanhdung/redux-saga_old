@@ -1,10 +1,13 @@
 import axiosService from '../commons/axiosService';
 import {API_URL} from '../constansts/config';
 
-const url = 'user/1/works';
-
-export const getList = () =>{
-    return axiosService.get(`${API_URL}${url}`);
+var user = JSON.parse(localStorage.getItem("user"));
+if(user){
+    var id = user.id;
+    var url = `user/${id}/works`;
+}
+export const getList = (id) =>{
+    return axiosService.get(`${API_URL}user/${id}/works`);
 };
 
 export const addWork = work=>{

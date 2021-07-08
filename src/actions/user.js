@@ -1,6 +1,15 @@
 import * as userTypes from "../constansts/user";
 
-
+export const getUser = () =>{
+    return {
+        type: userTypes.GET_USER,
+    };
+};
+export const getUserSuccess = () =>{
+    return {
+        type: userTypes.GET_USER_SUCCESS,
+    };
+};
 export const signup = (user)=>{
     return {
         type: userTypes.SIGNUP,
@@ -32,4 +41,11 @@ export const loginSuccess = (data)=>{
             data
         },
     };
-}
+};
+
+export const logout = ()=>{
+    return {
+        type: userTypes.LOGOUT,
+    };
+};
+

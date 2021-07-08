@@ -24,9 +24,9 @@ class Login extends Component {
 
     onSave = (e) => {
         const {history} = this.props;
-        console.log(history);
         e.preventDefault();
         this.props.onLogin(this.state);
+        history.push("/works");
     }
     render() {
         return <div>

@@ -1,4 +1,5 @@
 import * as workTypes from "../constansts/work";
+import * as userTypes from "../constansts/user";
 const initialState = {};
 
 const myReducers = (state = initialState, action) => {
@@ -10,7 +11,7 @@ const myReducers = (state = initialState, action) => {
                 workEditing: null,
             };
         }
-        case workTypes.FETCH_WORKS_SUCCESS: {
+        case workTypes.FETCH_WORKS_SUCCESS: {  
             const { data } = action.payload;
             return {
                 ...state,
@@ -118,6 +119,12 @@ const myReducers = (state = initialState, action) => {
                     ...state,
                 };
             }
+        }
+        case userTypes.LOGOUT: {
+            return {
+                ...state,
+                listWorks: [],
+            };
         }
         default:
             return state;

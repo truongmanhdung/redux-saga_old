@@ -18,7 +18,7 @@ const myReduces = (state = initialState, action)=>{
             };
         }
         case userTypes.LOGIN: {
-            console.log(action);
+            
             return {
                 ...state,
                 user: {},
@@ -29,6 +29,12 @@ const myReduces = (state = initialState, action)=>{
             return {
                 ...state,
                 user: data,
+            };
+        }
+        case userTypes.LOGOUT: {
+            return {
+                ...state,
+                listWorks: [],
             };
         }
         default: 
