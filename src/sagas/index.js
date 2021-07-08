@@ -1,11 +1,14 @@
 import { fork, take,call,put,delay, takeLatest, select, takeEvery} from "redux-saga/effects";
 import * as workTypes from "../constansts/work";
-import {getList,addWork,updateWork,deleteWork} from '../apis/work';
+import * as userTypes from "../constansts/user";
+import {getList,addWork,updateWork,deleteWork,updateStatus} from '../apis/work';
 import {showLoading , hideLoading} from '../actions/loading';;
-import {fetchWorksSuccess, fetchWorksFailed, addWorkSuccess, updateWorkSuccess, deleteWorkSuccess} from '../actions/work';
+import {fetchWorksSuccess, fetchWorksFailed, addWorkSuccess, updateWorkSuccess, deleteWorkSuccess,updateStatusSuccess} from '../actions/work';
 import { toast } from 'react-toastify';
+import {signupSuccess} from '../actions/user';
 import { hideModal } from "../actions/modal";
 import * as workApis from '../apis/work';
+import {addUser} from '../apis/user';
 // các công việc đã thực hiện
 // bươc 1: xử lý hàm fetch_works
 // bước 2: thực hiện call api
@@ -99,12 +102,51 @@ function* watchFetchListWorkAction() {
     yield put(hideLoading());
     yield toast.success("Xóa thành công");
  }
+ function* updateStatusSaga({payload}){
+    const {id,status} = payload;
+    console.log(id);
+    yield put(showLoading());
+    
+    const resp = yield call(updateStatus,{
+        status: !status
+    },id);
+    const {data} = resp;
+    if(resp.status === 200){
+        yield put(updateStatusSuccess(data));
+        yield toast.success("Cập nhật trạng thái thành công");
+    }
+    yield put(hideModal());
+    delay(500);
+    yield put(hideLoading());
+ }
+
+ function* signupSaga({payload}){
+    const {user} = payload;
+    const {name,email,password} = user;
+    yield put(showLoading());
+    const resp = yield call(addUser,{
+        name,
+        email,
+        password
+    });
+    const {data} = resp;
+    if(resp.status === 201){
+        console.log(data);
+        yield put(signupSuccess(data));
+        yield toast.success("Đăng nhập thành công");
+        localStorage.setItem('user',JSON.stringify(data));
+    }
+    delay(500);
+    yield put(hideLoading());
+ }
 function* rootSaga(){
     yield fork(watchFetchListWorkAction);
     yield takeLatest(workTypes.FILTER_WORKS, filterWorkSaga);
     yield takeEvery(workTypes.ADD_WORKS,addWorkSaga);
     yield takeLatest(workTypes.UPDATE_WORKS,updateWorkSaga);
     yield takeLatest(workTypes.DELETE_WORKS,deleteWorkSaga);
+    yield takeLatest(workTypes.UPDATE_STATUS,updateStatusSaga);
+    yield takeLatest(userTypes.SIGNUP,signupSaga);
 }
 
 

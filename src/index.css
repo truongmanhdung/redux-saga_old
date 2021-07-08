@@ -16,3 +16,8 @@ a{
     text-decoration: none;
     color: white;
 }
+.login{
+  margin: 150px auto;
+  max-width: 400px;
+  text-align: center;
+}

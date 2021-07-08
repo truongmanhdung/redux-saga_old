@@ -13,6 +13,10 @@ export const addWork = work=>{
 export const updateWork = (work, workId)=>{
     return axiosService.put(`${API_URL}${url}/${workId}`,work);
 };
+export const updateStatus = (status,id )=>{
+    console.log(status);
+    return axiosService.put(`${API_URL}${url}/${id}`,status);
+};
 export const deleteWork = (id)=>{
     return axiosService.delete(`${API_URL}${url}/${id}`);
 };

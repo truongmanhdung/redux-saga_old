@@ -94,6 +94,31 @@ const myReducers = (state = initialState, action) => {
                 ),
             };
         }
+        case workTypes.UPDATE_STATUS: {
+            return {
+                ...state,
+            };
+        }
+        case workTypes.UPDATE_STATUS_SUCCESS: {
+            const { data } = action.payload;
+            const { listWorks } = state;
+            const index = listWorks.findIndex((item) => item.id === data.id);
+            if (index !== -1) {
+                const newList = [
+                    ...listWorks.slice(0, index),
+                    data,
+                    ...listWorks.slice(index + 1),
+                ];
+                return {
+                    ...state,
+                    listWorks: newList,
+                };
+            } else {
+                return {
+                    ...state,
+                };
+            }
+        }
         default:
             return state;
     }

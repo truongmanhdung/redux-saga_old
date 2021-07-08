@@ -64,11 +64,11 @@ class taskBoard extends Component {
             deleteWorks(id);
         }
     }
-    updateStatus = (id) =>{
+    updateStatus = (id,status) =>{
         if(confirm("Bạn có muốn hoàn thành công việc hay không?")){
             const { workActionsCreators } = this.props;
-            const { deleteWorks } = workActionsCreators;
-            deleteWorks(id);
+            const { updateStatus } = workActionsCreators;
+            updateStatus(id,status);
         }
     }
     renderBoard() {

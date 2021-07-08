@@ -38,7 +38,10 @@ export default function ButtonAppBar() {
         }
         return <Switch>{result}</Switch>;
     };
+    var user = localStorage.getItem("user");
+    var user = JSON.parse(user);
     return (
+        
         <div className={classes.root}>
             <AppBar position="static">
                 <Toolbar>
@@ -55,6 +58,9 @@ export default function ButtonAppBar() {
                     </Typography>
                     <Button color="inherit">
                         <Link to="/login">Login</Link>
+                    </Button>
+                    <Button color="inherit">
+                        <Link to="/signup">Sign Up</Link>
                     </Button>
                 </Toolbar>
             </AppBar>

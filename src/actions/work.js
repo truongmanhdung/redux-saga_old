@@ -128,3 +128,23 @@ export const deleteWorkSuccess = (data) => {
         },
     };
 };
+
+export const updateStatus = (id,status) => {
+    console.log(status)
+    return {
+        type: workTypes.UPDATE_STATUS,
+        payload: {
+            id,
+            status
+        },
+    };
+};
+
+export const updateStatusSuccess = (data) => {
+    return {
+        type: workTypes.UPDATE_STATUS_SUCCESS,
+        payload: {
+            data,
+        },
+    };
+};

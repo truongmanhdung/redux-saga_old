@@ -11,12 +11,12 @@ const routes = [
     {
         path: "/login",
         exact: false,
-        component: () => <Login />,
+        component: ({history}) => <Login history={history}/>,
     },
     {
         path: "/signup",
         exact: false,
-        component: () => <SignUp />,
+        component: ({history}) => <SignUp history={history}/>,
     },
 ];
 

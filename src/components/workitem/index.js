@@ -25,7 +25,7 @@ class WorkItem extends Component {
                     </div>
                     <Fab
                         className={work.status === true ? d_none : d_block}
-                        onClick = {()=> updateStatus(work.id)}
+                        onClick = {()=> updateStatus(work.id,work.status)}
                     >
                         <DoneIcon />
                     </Fab>
