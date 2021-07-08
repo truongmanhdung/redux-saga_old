@@ -29,7 +29,9 @@ function* watchFetchListWorkAction() {
  function* filterWorkSaga({payload}){
      const {keyword} = payload;
      delay(500);
-     const listWorks = yield workApis.getList().then(res => {
+     const userList = localStorage.getItem("user");
+    const user = JSON.parse(userList);
+     const listWorks = yield workApis.getList(user.id).then(res => {
         const {data} = res;
         return data;
     });
@@ -40,7 +42,6 @@ function* watchFetchListWorkAction() {
         .includes(keyword.trim().toLowerCase())
 
      );
-    console.log(filterWorks);
      yield put(fetchWorksSuccess(filterWorks));
  }
  function* addWorkSaga ({payload}){
