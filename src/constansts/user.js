@@ -1,3 +1,4 @@
+export const LOAD_USER = "LOAD_USER"
 export const GET_USER = 'GET_USER';
 export const GET_USER_SUCCESS = 'GET_USER_SUCCESS';
 export const SIGNUP = 'SIGNUP';

@@ -1,7 +1,8 @@
 import axiosService from '../commons/axiosService';
 import {API_URL} from '../constansts/config';
+import { Base64 } from 'js-base64';
 
-var user = JSON.parse(localStorage.getItem("user"));
+var user = JSON.parse(Base64.decode(localStorage.getItem("user")));
 if(user){
     var id = user.id;
     var url = `user/${id}/works`;

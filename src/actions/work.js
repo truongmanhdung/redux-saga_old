@@ -1,5 +1,6 @@
 import * as workApis from "../apis/work";
 import * as workTypes from "../constansts/work";
+
 export const fetchWorks = () => {
     return {
         type: workTypes.FETCH_WORKS,
@@ -27,8 +28,6 @@ export const fetchWorksFailed = (err) => {
 // b3: dispatch nếu thành công hàm fetchWorksSuccess()
 
 
-
-
 export const addWorks = (work) => {
     return {
         type: workTypes.ADD_WORKS,
@@ -47,7 +46,7 @@ export const addWorkSuccess = (work) => {
 };
 
 
-export const filterWorks = keyword=> {
+export const filterWorks = keyword => {
     return {
         type: workTypes.FILTER_WORKS,
         payload: {
@@ -116,7 +115,7 @@ export const deleteWorkSuccess = (data) => {
     };
 };
 
-export const updateStatus = (id,status) => {
+export const updateStatus = (id, status) => {
     return {
         type: workTypes.UPDATE_STATUS,
         payload: {
