@@ -26,10 +26,10 @@ class workForms extends Component {
             description: '',
             status: false
         };
-    
+
     };
 
-    componentWillReceiveProps(nextProps){
+    UNSAFE_componentWillReceiveProps(nextProps){
         if(nextProps && nextProps.workEditing){
           this.setState({
             id: nextProps.workEditing.id,
@@ -72,6 +72,7 @@ class workForms extends Component {
     renderStatus(){
         let html = null;
         const {workEditing, classes} = this.props;
+        classes.formControl = undefined;
         if(workEditing && workEditing.id){
             html = (<FormControl className={classes.formControl} style={{width: '200px'}}>
                         <InputLabel  id="demo-simple-select-label">Trạng thái</InputLabel>
@@ -127,7 +128,6 @@ class workForms extends Component {
                                 required
                                 fullWidth
                                 name="description"
-
                                 onChange={this.onChange}
                                 value={description}
                             />
@@ -139,6 +139,7 @@ class workForms extends Component {
                                 type="number"
                                 fullWidth
                                 name="time"
+                                min="0"
                                 value={time}
                                 onChange={this.onChange}
                             />
@@ -171,4 +172,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 export default withStyles(styles)(
-    connect(mapStateToProps, mapDispatchToProps)(workForms))
+    connect(mapStateToProps, mapDispatchToProps)(workForms));

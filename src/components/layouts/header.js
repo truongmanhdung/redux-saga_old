@@ -7,11 +7,11 @@ import {Link, Route, Switch} from "react-router-dom";
 import routes from "../../routes";
 import {connect} from "react-redux";
 import * as actionUser from '../../actions/user';
+import {Base64} from "js-base64";
 
 class Header extends React.Component {
     componentDidMount() {
         this.props.onLoadUser();
-
     }
 
     showContent = (routes) => {
@@ -38,8 +38,10 @@ class Header extends React.Component {
         var users = this.props.users;
         let header = null;
         if (users.user) {
-            var name = users.user.name;
-            if(name) {
+            var user = JSON.parse(Base64.decode(users.user));
+            if(users.user.name) {
+                var name = user.name;
+                console.log(name);
                 header = (<div style={{display: 'flex', alignItems: 'center'}}>
                     <Button color="secondary">
                         Chào {name}

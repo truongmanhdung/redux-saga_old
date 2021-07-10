@@ -3,8 +3,8 @@ import * as userTypes from "../constansts/user";
 export const loadUser = () => {
     return {
         type: userTypes.LOAD_USER,
-    }
-}
+    };
+};
 
 export const getUser = () => {
     return {

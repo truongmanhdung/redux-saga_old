@@ -5,18 +5,23 @@ const initialState = {};
 const myReduces = (state = initialState, action)=>{
     switch(action.type){
         case userTypes.LOAD_USER: {
-            const user = JSON.parse(Base64.decode(localStorage.getItem("user")));
-            if(user){
-                return {
-                    ...state,
-                    user: user,
-                };
+
+            if(localStorage.getItem("user")){
+                const user = localStorage.getItem("user");
+                if(user) {
+                    return {
+                        ...state,
+                        user: user,
+                    };
+                }
+
             }else{
                 return {
                     ...state,
                     user: {},
                 };
             }
+
         }
         case userTypes.SIGNUP: {
             return {
@@ -38,11 +43,19 @@ const myReduces = (state = initialState, action)=>{
             };
         }
         case userTypes.LOGIN_SUCCESS: {
-            const data = JSON.parse(Base64.decode(localStorage.getItem("user")));
-            return {
-                ...state,
-                user: data,
-            };
+            if(localStorage.getItem("user")){
+                const data = localStorage.getItem("user");
+                return {
+                    ...state,
+                    user: data,
+                };
+            }else{
+                return {
+                    ...state,
+                    user: {},
+                };
+            }
+
         }
         case userTypes.LOGOUT: {
             return {

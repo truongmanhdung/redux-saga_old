@@ -4,10 +4,7 @@ import './index.css';
 import App from './containers/App/index';
 import reportWebVitals from './reportWebVitals';
 ReactDOM.render(
-  
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+    <App />,
   document.getElementById('root')
 );
 
